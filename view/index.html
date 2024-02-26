@@ -9,8 +9,17 @@
 </head>
 
 <body>
-    <h1>Welcome</h1>
-    <main></main>
+    <h1>Welcome!</h1>
+    <h2>Connect with your friends quickly and easily.</h2>
+    <main id="WelcomeScreen">
+        <h3>Let's Start!</h3>
+        <form action="/rooms" id="nameForm">
+            <label for="nameForm">Username:
+                <input type="text" value="" placeholder="username" name="username" id="username-text" required>
+            </label>
+            <input type="button" value="Find Rooms or Create Them" onclick="getRooms();">
+        </form>
+    </main>
     <script src="viewIndex.js"></script>
 </body>
 

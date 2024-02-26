@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../chatRoom.css">
+    <title>Room</title>
+</head>
+
+<body onbeforeunload="disconnect();">
+    <main id="chat-screen">
+        <div id="chat">
+            <div class="chat-comment">
+                <div class="chat-comment-user">App</div>
+                <div class="chat-comment-text">Bem-vindo! Converse com outras pessoas conectadas à mesma sala e
+                    lembre-se de manter sempre o respeito!</div>
+            </div>
+        </div>
+        <div id="chat-send">
+            <input type="text" id="chat-send-text">
+            <input type="button" onclick="sendMessage()" value="send">
+        </div>
+    </main>
+
+    <script src="../room_script.js"></script>
+</body>
+
+</html>

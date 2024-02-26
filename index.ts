@@ -7,10 +7,10 @@ dotenv.config(); //required for process.env.Port not to return undefined.
 const app = express();
 
 //Middleware
-app.use(router);
 app.use(express.static(__dirname + '/view'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(router);
 
 //Listening
 app.listen(process.env.PORT, () => {

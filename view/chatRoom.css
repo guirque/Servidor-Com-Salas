@@ -1,0 +1,117 @@
+/*General ------------------------------------------------*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow-y: hidden;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+}
+
+/**/
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgb(14, 1, 37);
+    border-radius: 8px;
+}
+
+#chat-screen {
+    height: 100vh;
+    animation: chatScreenAnim 750ms forwards;
+}
+
+@keyframes chatScreenAnim {
+    0% {
+        opacity: 0;
+    }
+
+    100% {}
+
+}
+
+#chat {
+    border: thin groove black;
+    background-image: linear-gradient(rgb(121, 212, 208), rgb(76, 192, 207), rgb(240, 217, 175));
+    margin: 2vh auto;
+    width: 50vw;
+    height: 90vh;
+    padding: 1vh 2vw;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1.25vh;
+    overflow-y: auto;
+}
+
+@media only screen and (max-width: 520px) {
+    #chat {
+        width: 70vw !important;
+    }
+}
+
+@media only screen and (max-width: 359px) {
+    #chat {
+        width: 100vw !important;
+        margin: 0 0 2vh 0;
+        border: none;
+    }
+}
+
+
+.chat-comment {
+    display: flex;
+    flex-direction: column;
+    max-width: 80%;
+    /*animation: chatCommentAnim forwards 500ms;*/
+}
+
+@keyframes chatCommentAnim {
+    0% {
+        transform: rotateZ(20deg) scale(0);
+        margin-left: -30vw;
+    }
+
+    100% {}
+}
+
+.self-chat-comment .chat-comment-text {
+    background-color: rgb(183, 171, 250) !important;
+}
+
+.chat-comment-user {
+    font-style: italic;
+}
+
+.chat-comment-text {
+    background-color: rgb(157, 191, 255);
+    box-shadow: 1px 2px 2px 1px rgba(0, 0, 0, 0.397);
+    border-radius: 5px;
+    padding: 0.25em;
+}
+
+#chat-send {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 4vh;
+}
+
+#chat-send-text {
+    width: 100%;
+    padding: 0.25em;
+}
+
+#chat-send input[type="button"] {
+    padding: 0.25vh;
+    font-size: 1em
+}
