@@ -2,7 +2,7 @@ import express = require('express');
 import dotenv = require('dotenv');
 import router from './routes/router';
 import ws = require('ws');
-import { getRoom } from './data/data';
+import { getRoom, sendToAllUsers } from './data/data';
 
 dotenv.config(); //required for process.env.Port not to return undefined.
 
@@ -33,33 +33,42 @@ wss.on('connection', (connection) => {
     //Receiving Messages
     connection.on('message', (messageConnection) => {
 
-        let messageReceived = JSON.parse(messageConnection.toString());;
+        let messageReceived = JSON.parse(messageConnection.toString());
+
         //Add connection to appropriate room.
-        if (messageReceived.type == 'connect-request') {
 
-            //IDEA: Verify if user's IP was registered on the room, for validation.
-            getRoom(messageReceived.roomNum).userConnections.push(connection);
-            console.log(`<Room-${messageReceived.roomNum}> User connection registered.`);
-        }
-        else if (messageReceived.type == 'disconnect-request') {
+        switch (messageReceived.type) {
+            case 'connect-request':
 
-            let theRoom = getRoom(messageReceived.roomNum);
-            theRoom.numOfUsers--; //Reduce number of users
-            theRoom.userConnections = theRoom.userConnections.filter((ws_connection) => {
-                return !Object.is(ws_connection, connection);
-            }); //Removing connection that's no longer existent.
-            console.log(`<Room-${theRoom.number}> User disconnected.`);
-        }
-        else if (messageReceived.type == 'send-message') {
-            //find the room and send to all other users in room
-            getRoom(messageReceived.roomNum).userConnections.forEach((userConnection) => {
-                if (!Object.is(userConnection, connection))
-                    userConnection.send(JSON.stringify({
-                        type: 'message',
-                        data: messageReceived.message,
-                        username: messageReceived.username
-                    }));
-            })
+                //IDEA: Verify if user's IP was registered on the room, for validation.
+                let thisRoom = getRoom(messageReceived.roomNum);
+                thisRoom.userConnections.push(connection); //registering connection
+                sendToAllUsers(thisRoom, { type: 'user-in-or-out', username: messageReceived.username, entered: true }) //telling users about new user.
+                console.log(`<Room-${messageReceived.roomNum}> User connection registered.`);
+                break;
+
+            case 'disconnect-request':
+
+                let theRoom = getRoom(messageReceived.roomNum);
+                theRoom.numOfUsers--; //Reduce number of users
+                theRoom.userConnections = theRoom.userConnections.filter((ws_connection) => {
+                    return !Object.is(ws_connection, connection);
+                }); //Removing connection that's no longer existent.
+                sendToAllUsers(theRoom, { type: 'user-in-or-out', username: messageReceived.username, entered: false }) //telling users about user that left
+                console.log(`<Room-${theRoom.number}> User disconnected.`);
+                break;
+
+            case 'send-message':
+                //find the room and send to all other users in room
+                getRoom(messageReceived.roomNum).userConnections.forEach((userConnection) => {
+                    if (!Object.is(userConnection, connection))
+                        userConnection.send(JSON.stringify({
+                            type: 'message',
+                            data: messageReceived.message,
+                            username: messageReceived.username
+                        }));
+                })
+                break;
         }
     })
 });

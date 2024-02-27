@@ -75,6 +75,10 @@ body {
     /*animation: chatCommentAnim forwards 500ms;*/
 }
 
+.warning {
+    background-color: lightyellow !important;
+}
+
 @keyframes chatCommentAnim {
     0% {
         transform: rotateZ(20deg) scale(0);

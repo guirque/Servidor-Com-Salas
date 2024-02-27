@@ -37,3 +37,12 @@ export let rooms: Array<room> = [];
 export function getRoom(roomNumber: number): room {
     return rooms[roomNumber];
 }
+
+export function sendToAllUsers(aRoom: room, message: Object | Array<any>) {
+    let messageToSend = JSON.stringify(message);
+    aRoom.userConnections.forEach(
+        (aUser) => {
+            aUser.send(messageToSend);
+        }
+    )
+}
